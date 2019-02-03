@@ -1,0 +1,50 @@
+---
+- name: install open jdk 8, unzip and wget
+  yum:
+    name: [ java-1.8.0-openjdk, unzip, wget ]
+    state: present
+
+- name: group add
+  group:
+    name: "{{ tomcat8_server_group }}"
+  #sudo: True
+
+
+- name: user add
+  user:
+    name: "{{ tomcat8_server_user }}"
+    group: "{{ tomcat8_server_group }}"
+    home: "{{ tomcat8_user_home }}"
+    createhome: no
+  #sudo: True
+
+- name: download and extract
+  unarchive:
+    #src: "{{ tomcat_binary_url }}"
+    #src: "https:/archive.apache.org/dist/tomcat/tomcat-8/v8.5.28/bin/apache-tomcat-8.5.28.tar.gz"
+    src: "https://archive.apache.org/dist/tomcat/tomcat-8/v8.5.28/bin/apache-tomcat-8.5.28.tar.gz"
+    dest: "/opt/"
+    remote_src: yes
+    copy: no
+  #sudo: True
+
+- name: symlink install directory
+  file:
+    src: "{{ tomcat_target_dir }}"
+    path: "{{ tomcat8_home }}"
+    state: link
+  #sudo: True
+
+- name: change ownership of target installation
+  file:
+    path: "{{ tomcat_target_dir }}"
+    owner: "{{ tomcat8_server_user }}"
+    group: "{{ tomcat8_server_group }}"
+    state: directory
+    recurse: yes
+  #sudo: True
+
+- name: systemd
+  template: src=tomcat.service.j2 dest=/etc/systemd/system/tomcat8.service
+  notify: restart tomcat8
+  #sudo: True
