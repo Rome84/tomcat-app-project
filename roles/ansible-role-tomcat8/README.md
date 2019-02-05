@@ -1,4 +1,4 @@
-# Ansible Role: Tomcat 8 [![Build Status](https://travis-ci.org/Islandora-Devops/ansible-role-tomcat8.svg?branch=master)](https://travis-ci.org/Islandora-Devops/ansible-role-tomcat8)
+# Ansible Role: Tomcat 8 
 
 An Ansible role that installs Tomcat 8 on:
 
@@ -67,7 +67,7 @@ tomcat_target_dir:  "/opt/apache-tomcat-{{ tomcat8_version }}"
 
     - hosts: webservers
       roles:
-        - { role: islandora.tomcat8 }
+        - { role: rome.tomcat8 }
 
 ## License
 
