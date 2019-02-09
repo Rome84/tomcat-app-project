@@ -1,6 +1,8 @@
 ---
 
 - name: install tomcat8
+  become: yes
+  become_method: sudo
   apt:
     name: "{{ item }}"
     state: present
